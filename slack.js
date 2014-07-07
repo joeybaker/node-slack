@@ -17,27 +17,17 @@ Slack.prototype.send = function(message, cb) {
   if (!message.channel) { message.channel = '#general'; }
 
   var command = 'https://' + this.domain + '.slack.com/services/hooks/incoming-webhook?token=' + this.token;
-  var body = {
-    channel:  message.channel,
-    text:     message.text,
-    username: message.username
-  };
 
-  var option = {
+  var options = {
     proxy: (this.httpProxyOptions && this.httpProxyOptions.proxy) || process.env.https_proxy || process.env.http_proxy,
     url:   command,
-    body:  JSON.stringify(body)
+    body:  JSON.stringify(message)
   };
-
-	if (message.icon_url) { options.icon_url = message.icon_url; }
-	if (message.icon_emoji) { options.icon_emoji = message.icon_emoji; }
-	if (message.attachments) { options.attachments = message.attachments; }
-  if (message.unfurl_links) { options.unfurl_links = message.unfurl_links; }
 
   if(!cb) var d = deferred();
 
-  var req = request.post(option, function(err, res, body) {
-    if (!err && body!='ok') {
+  var req = request.post(options, function(err, res, body) {
+    if (!err && body !== 'ok') {
       err = {message: body};
       body = null;
     }
