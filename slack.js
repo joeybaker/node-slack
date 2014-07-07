@@ -3,10 +3,10 @@
 var request  = require('request');
 var deferred = require('deferred');
 
-function Slack(domain, token, http_proxy_options) {
+function Slack(domain, token, httpProxyOptions) {
   this.domain = domain;
   this.token = token;
-  this.http_proxy_options = http_proxy_options;
+  this.httpProxyOptions = httpProxyOptions;
 }
 
 Slack.prototype.send = function(message, cb) {
@@ -24,7 +24,7 @@ Slack.prototype.send = function(message, cb) {
   };
 
   var option = {
-    proxy: (this.http_proxy_options && this.http_proxy_options.proxy) || process.env.https_proxy || process.env.http_proxy,
+    proxy: (this.httpProxyOptions && this.httpProxyOptions.proxy) || process.env.https_proxy || process.env.http_proxy,
     url:   command,
     body:  JSON.stringify(body)
   };
